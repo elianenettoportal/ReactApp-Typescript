@@ -13,6 +13,7 @@ const UserList =()=>{
     ]
   
     useEffect(() => {
+        console.log("EFFECT")
         const appService = new AppService();
         const fetchData = async () => {
             const response = await appService.getUsers();
