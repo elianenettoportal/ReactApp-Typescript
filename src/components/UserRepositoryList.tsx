@@ -1,7 +1,7 @@
 import { useState, useEffect} from 'react';
 import { useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
-import { AppService } from '../services/app';
+import { AppService } from '../services/AppService';
 import Table from "./Table";
 import { Button, Typography } from '@mui/material';
 

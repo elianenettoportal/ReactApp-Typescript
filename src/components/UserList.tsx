@@ -1,5 +1,5 @@
 import { useState, useEffect} from 'react';
-import { AppService } from '../services/app';
+import { AppService } from '../services/AppService';
 import Table from "./Table";
 import { Typography } from '@mui/material';
 

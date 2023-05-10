@@ -3,7 +3,7 @@ import axios from 'axios';
 export class AppService {
 
     public async getUsers(): Promise<any> {
-        const response = await axios.get(`${process.env.REACT_APP_BASE_URL}:${process.env.REACT_APP_SERVER_PORT}${process.env.REACT_APP_BASE_ROUTE}?since`);
+        const response = await axios.get(`${process.env.REACT_APP_BASE_URL}${process.env.REACT_APP_BASE_ROUTE}?since`);
         if(response && response.data && response.data.success){
             return response.data.users;
         }else{
@@ -12,7 +12,7 @@ export class AppService {
     }
 
     public async getUser(username: string) {
-        const response = await axios.get(`${process.env.REACT_APP_BASE_URL}:${process.env.REACT_APP_SERVER_PORT}${process.env.REACT_APP_BASE_ROUTE}/:${username}/details?username=${username}`);
+        const response = await axios.get(`${process.env.REACT_APP_BASE_URL}${process.env.REACT_APP_BASE_ROUTE}:${username}/details?username=${username}`);
         if(response && response.data && response.data.success){
             return response.data.user_details;
         }else{
@@ -21,7 +21,7 @@ export class AppService {
     }
 
     public async getRepositories(username: string) {
-        const response = await axios.get(`${process.env.REACT_APP_BASE_URL}:${process.env.REACT_APP_SERVER_PORT}${process.env.REACT_APP_BASE_ROUTE}/${username}/repos`);
+        const response = await axios.get(`${process.env.REACT_APP_BASE_URL}${process.env.REACT_APP_BASE_ROUTE}${username}/repos`);
         if(response && response.data && response.data.success){
             return response.data.user_repos;
         }else{
