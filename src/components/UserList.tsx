@@ -7,9 +7,9 @@ const UserList =()=>{
     const [users, setUsers] = useState<any[]>();
    
     const columnsUsers= [
-        { field: 'id', headerName: 'Id', width: 70 },
-        { field: 'login', headerName: 'Login', width: 130 },
-        { field: 'profileurl', headerName: 'Profile Url', width: 130 }
+        { field: 'id', headerName: 'Id', width: 10 },
+        { field: 'login', headerName: 'Login', width: 300 },
+        { field: 'profileurl', headerName: 'Profile Url', width: 500 }
     ]
   
     useEffect(() => {

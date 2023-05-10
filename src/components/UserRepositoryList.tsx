@@ -11,9 +11,9 @@ const UserRepositoryList =()=>{
     const [repos, setRepos] = useState<any[]>([])
     
     const columnsRepos= [
-        { field: 'id', headerName: 'Id', width: 70 },
-        { field: 'login', headerName: 'Login', width: 130 },
-        { field: 'reposurl', headerName: 'Repos Url', width: 130 }
+        { field: 'id', headerName: 'Id', width: 100 },
+        { field: 'login', headerName: 'Login', width: 400 },
+        { field: 'reposurl', headerName: 'Repos Url', width: 550 }
     ]
 
     useEffect(() => {
@@ -44,7 +44,7 @@ const UserRepositoryList =()=>{
                 </Typography>
                 <Table data={repos} component={'repos'} columnsParam={columnsRepos}/>
                 <div style={{display:"flex", flexDirection: "row"}}>
-                    <Button style={{color:"black"}} onClick={handleBack}>Back</Button>
+                    <Button style={{color:"black", transitionDuration: "0.4s", backgroundColor:"rgba(0, 0, 0, 0.54)", width:"7%"}} onClick={handleBack}>Back</Button>
                 </div>
             </>
             }

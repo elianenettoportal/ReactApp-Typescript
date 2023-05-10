@@ -2,7 +2,7 @@ import { useState, useEffect} from 'react';
 import { useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { AppService } from '../services/AppService';
-import { Link, Button, TextField, Box } from '@mui/material';
+import { Link, Button, TextField, Box, Typography} from '@mui/material';
 
 const UserDetails =()=>{
     let { username=''} = useParams<any>();
@@ -26,18 +26,21 @@ const UserDetails =()=>{
         navigate(`/users`);
     }
     return (
-        <div>
+        <div style={{margin:"5%"}}>
             {!user ?
                <div className="loader"></div>
             :
             <>
+                <Typography variant="h3" component="h2" style={{color:"black", textAlign: "left"}}>
+                    User Details 
+                </Typography>
                 <Box
                     component="form"
                     sx={{'& .MuiTextField-root': { m: 1, width: '25ch' }}}
                     noValidate
                     autoComplete="off"
                 >
-                    <div>
+                    <div style={{display:"flex", flexDirection: "column"}}>
                         <TextField
                             disabled
                             id="outlined-disabled"
@@ -59,12 +62,12 @@ const UserDetails =()=>{
                             defaultValue="Created"
                             value={user['createdat'] || ''}
                         />
-                        <Button onClick={handleClick}>All Repositories</Button>
-                        <Link href={user['profileurl'] || '#'}>{user['profileurl'] || ''}</Link>
+                        <Link style={{marginLeft: "14px", cursor: "pointer"}} onClick={handleClick}>All Repositories</Link>
+                        <Link style={{margin: "1em"}} target="_blank" href={user['profileurl'] || '#'}>{user['profileurl'] || ''}</Link>
                     </div>
                 </Box>
                 <div style={{display:"flex", flexDirection: "row"}}>
-                    <Button style={{color:"black"}} onClick={handleBack}>Back</Button>
+                    <Button style={{color:"black", transitionDuration: "0.4s", backgroundColor:"rgba(0, 0, 0, 0.54)", width:"7%"}} onClick={handleBack}>Back</Button>
                 </div>
             </>
             }

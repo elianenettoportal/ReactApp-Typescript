@@ -14,7 +14,7 @@ const DataTable=({data, component, columnsParam}) =>{
         navigate(`/users/${params?.row?.login}/details/`);
     };
     return (
-        <div style={{ height: 400, width: '100%' }}>
+        <div style={{ height: 400, width: '80%', margin:50 }}>
             <DataGrid
                 rows={data}
                 columns={columns}
