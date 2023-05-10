@@ -1,49 +1,107 @@
 # Reactapp with typescript
 
-1- tsconfig.json
-2- webpack for React and TypeScript
-we’re going to configure webpack to handle taking in the entry files, passing them to TypeScript for compilation, and returning a bundled JavaScript script for browsers.
-webpack is a tool that lets you compile JavaScript modules and is also known as a module bundler.
-3- configure the buildpack
-To get started with webpack in TypeScript, we need to install webpack and a webpack plugin called ts-loader. ts-loader? As its name implies, ts-loader is the TypeScript loader for webpack. Put simply, it’s a plugin that helps webpack work well with TypeScript.
-To do this, run the following command in the terminal:
+Here I will describe the steps to create this application
 
-> npm install webpack webpack-cli ts-loader
+### Create a new ReactApp
+> npx create-react-app my-app --template typescript<br>
+> npm install --save typescript @types/node @types/react @types/react-dom @types/jest<br>
+>npm start
 
-create a new file called webpack.config.js and add the following code:
+Runs the app in the development mode.\
+Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+
+### Configure Typescript 
+1- Create or edit tsconfig.json Add the json config below. It will define target and module for the typescript transcript. <br>
+```
+compilerOptions": {
+    "outDir": "./dist/",
+    "target": "es5",
+    "module": "es6",
+    "moduleResolution": "node",
+    "lib": ["ES6", "DOM"],
+    "allowJs": true,
+    "jsx": "react-jsx",
+    "noImplicitAny": false,
+    "skipLibCheck": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "strict": true,
+    "forceConsistentCasingInFileNames": true,
+    "noFallthroughCasesInSwitch": true,
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "noEmit": false
+    }
+```
+
+2- Configure a config for the webpack for React and TypeScript<br>
+We re going to configure webpack to handle taking in the entry files, passing them to TypeScript for compilation and returning a bundled JavaScript script for browsers.<br>
+ Webpack is a tool that lets you compile JavaScript modules and is also known as a module bundler.<br>
+<br>
+3- Configure the buildpack<br>
+First, to have a webpack in TypeScript need to install webpack and a webpack plugin called ts-loader. ts-loader. The ts-loader is the TypeScript loader for webpack. It is a plugin that helps webpack work well with TypeScript. To do this, run the following command in the terminal <br>
+>npm install webpack webpack-cli ts-loader
+
+4- Create a new file called webpack.config.js and add the following code:<br>
+```
 const path = require('path');
-module.exports = {
-entry: './src/index.tsx',
-module: {
-rules: [
-{
-test: /\.tsx?$/,
-use: 'ts-loader',
-exclude: /node_modules/,
-},
-],
-},
-resolve: {
-extensions: ['.tsx', '.ts', '.js'],
-},
-output: {
-filename: 'bundle.js',
-path: path.resolve(\_\_dirname, 'dist'),
-},
-};
-
-4- Add npm scripts in package.json
+    module.exports = {
+        entry: './src/index.tsx',
+        module: {
+        rules: [
+                {
+                    test: /\.tsx?$/,
+                    use: 'ts-loader',
+                    exclude: /node_modules/,
+                },
+            ],
+        },
+        resolve: {
+            extensions: ['.tsx', '.ts', '.js'],
+        },
+            output: {
+            filename: 'bundle.js',
+            path: path.resolve(\_\_dirname, 'dist'),
+        },
+    };
+```
+5- Add npm scripts in package.json<br>
+```
 "scripts": {
-"magic": "webpack"
+    "magic": "webpack"
 }
-5- Create index.tsx file - the main entry point file of our project
-make sure you have installer -> react react-dom @types/react @types/react-dom
+```
+5- Create index.tsx file - the main entry point file of our project<br>
+Make sure you have installer -> react react-dom @types/react @types/react-dom<br>
 A build folder with a file named bundle.js has been created after compile and run
+>npm run magic
 
-> npm run magic
+### Publishing
+#### GITHUB 
+> 1- create a repository in Github name= frontend_reactapp<br>
+> 2- copy new github URL<br>
+> 3- access your Frontend code in VScode<br>
+> 4- create a git track <br>
+>>git init
+5- Add copied remote URL to where the files will be send to<br>
+>git remote add origin url <br>
 
-### Create a Dockerfile for the React Project - frontend.dockerfile
+#### HEROKU 
+> 1- create a new app name =frontend-reactapp<br>
+> 2- configure buildpack - heroku/node.js (see details below)<br>
+> 3- configure environment variables in Settings:<br>
+REACT_APP_BASE_ROUTE -add the backend hroku app url  <br>
 
+#### BUILDPAC
+For a react application in heroku we don´t need to create a Prockfile, the commuinit already have a few packages that does the build and here I used one from Heroku.<br>
+> 1- Go to heroku dashboard -> settings -> add buildpack<br>
+> 2- Select nodejs<br>
+
+### Docker Image
+We can also manage this app using Docker. Below is the file to generate the Frontend image for the application. I also added the backend image and the docker compose below.<br>
+   
+#### Create a Dockerfile for the React Project - frontend.dockerfile
+``` 
     FROM node:18-slim as base
     RUN mkdir -p /app
     WORKDIR /app
@@ -55,50 +113,49 @@ A build folder with a file named bundle.js has been created after compile and ru
     ENV NUXT_HOST=0.0.0.0
     ENV NUXT_PORT=3005
     CMD [ "npm", "start" ]
+```
 
-# Getting Started with Create React App
+### Create a Dockerfile for the Typescript Project - backend.dockerfile
+```
+    FROM node:18-slim as base
+    RUN mkdir -p /app
+    WORKDIR /app
+    COPY backend_typescript/package*.json ./
+    COPY backend_typescript/tsconfig.json ./
+    RUN npm install
+    COPY backend_typescript/ .
+    EXPOSE 3333
+    CMD [ "npm", "start" ]
+```
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+### Docker-compose - docker-compose.yml
+```
+    version: "3.7"
+    services:
+    ts-api:
+    image: playground-backend:latest
+    ports:
+      - 3333:3333
+    command: npm run start
 
-## Available Scripts
+    web-frontend:
+    image: playground-frontend:latest
+    environment:
+      PORT: 3005
+      PROXY_API: http://playground-backend:3333/
+    ports:
+      - 3005:3005
+```
 
-In the project directory, you can run:
+### Build Docker image<br>
+from root - package before backend code<br>
+```
+  docker build --file=backend_typescript/backend.dockerfile  -t playground-backend .
+  docker build --file=frontend_reactapp/frontend.dockerfile  -t playground-frontend .
+```
+### Run contaier<br>
+```
+  docker-compose -f docker-compose.yml up
+```
 
-### `npm start`
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
-
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
-
-### `npm test`
-
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
