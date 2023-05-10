@@ -1,6 +1,6 @@
 
 const path = require('path');
-const Dotenv = require('dotenv-webpack');
+//const Dotenv = require('dotenv-webpack');
 const webpack = require('webpack');
 module.exports = {
   mode: 'production',
@@ -46,6 +46,6 @@ module.exports = {
         NODE_ENV: JSON.stringify('production'),
       },
     }),
-    new Dotenv(),
+    //new Dotenv(),
   ],
 };

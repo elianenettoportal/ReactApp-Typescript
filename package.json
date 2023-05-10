@@ -1,6 +1,10 @@
 {
   "name": "frontend_reactapp",
   "version": "0.1.0",
+  "engines": { 
+    "node": "v19.8.1",
+    "npm": "9.5.1"
+  },
   "private": true,
   "dependencies": {
     "@emotion/react": "^11.11.0",
@@ -37,7 +41,6 @@
     "eject": "react-scripts eject",
     "magic": "webpack"
   },
-  "proxy":"http://localhost:3333",
   "eslintConfig": {
     "extends": [
       "react-app",
