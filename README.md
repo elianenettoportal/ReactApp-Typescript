@@ -1,3 +1,9 @@
+### Next Steps
+1. Implement GraphQL
+2. Implement Interfaces
+3. Implement Tests
+
+
 # Reactapp with typescript
 
 Here I will describe the steps to create this application
