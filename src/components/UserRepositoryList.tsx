@@ -4,23 +4,33 @@ import { useNavigate } from "react-router-dom";
 import { AppService } from '../services/AppService';
 import Table from "./Table";
 import { Button, Typography } from '@mui/material';
+import { GridColDef } from '@mui/x-data-grid';
 
-const UserRepositoryList =()=>{
+interface IProps{}
+interface IState{
+    repos: any[]; 
+    component : string;
+    columnsParam : GridColDef[];
+}
+
+const UserRepositoryList:React.FC<IProps>=()=>{
+    let [state , setState] = useState<IState>({
+        repos : [],
+        component : 'repos',
+        columnsParam : [
+            { field: 'id', headerName: 'Id', width: 100 },
+            { field: 'login', headerName: 'Login', width: 400 },
+            { field: 'reposurl', headerName: 'Repos Url', width: 550 }
+        ]
+    });
     let { username=''} = useParams(); 
     const navigate = useNavigate();  
-    const [repos, setRepos] = useState<any[]>([])
-    
-    const columnsRepos= [
-        { field: 'id', headerName: 'Id', width: 100 },
-        { field: 'login', headerName: 'Login', width: 400 },
-        { field: 'reposurl', headerName: 'Repos Url', width: 550 }
-    ]
 
     useEffect(() => {
         const appService = new AppService();
         const fetchData = async () => {
-            const response = await appService.getRepositories(username);
-            setRepos(response);
+            const repos = await appService.getRepositories(username);
+            setState(repos);
         }
         fetchData()
           .catch(console.error);
@@ -32,20 +42,18 @@ const UserRepositoryList =()=>{
 
     return (
         <div>
-            {!repos ? 
+            {!state.repos ? 
                 <div className="loader"></div>
             :
             <>
-               <Typography variant="h3" component="h2" style={{color:"black", textAlign: "left"}}>
+               <Typography variant="h3" component="h2">
                     Repositories 
                 </Typography>
-                <Typography variant="h6" component="h2" style={{color:"grey", textAlign: "left"}}>
+                <Typography variant="h6" component="h2">
                     User Login : {username} 
                 </Typography>
-                <Table data={repos} component={'repos'} columnsParam={columnsRepos}/>
-                <div style={{display:"flex", flexDirection: "row"}}>
-                    <Button style={{color:"black", transitionDuration: "0.4s", backgroundColor:"rgba(0, 0, 0, 0.54)", width:"7%"}} onClick={handleBack}>Back</Button>
-                </div>
+                <Table data={state.repos} component={'repos'} columnsParam={state.columnsParam}/>
+                <Button  onClick={handleBack}>Back</Button>
             </>
             }
         </div>

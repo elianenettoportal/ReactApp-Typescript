@@ -3,7 +3,9 @@ import axios from 'axios';
 export class AppService {
 
     public async getUsers(): Promise<any> {
+        console.log("GET USERS")
         const response = await axios.get(`${process.env.REACT_APP_BASE_URL}${process.env.REACT_APP_BASE_ROUTE}?since`);
+        console.log(response)
         if(response && response.data && response.data.success){
             return response.data.users;
         }else{

@@ -2,7 +2,13 @@ import { DataGrid, GridColDef, GridEventListener  } from '@mui/x-data-grid';
 import { useNavigate } from "react-router-dom";
 import { useState } from 'react';
 
-const DataTable=({data, component, columnsParam}) =>{
+interface IProps{
+    data: any[];
+    component: string;
+    columnsParam:GridColDef[];
+}
+
+const DataTable:React.FC<IProps>=({data, component, columnsParam}) =>{
     const [columns] = useState<GridColDef[]>(columnsParam);
     const navigate = useNavigate();
 
@@ -14,7 +20,7 @@ const DataTable=({data, component, columnsParam}) =>{
         navigate(`/users/${params?.row?.login}/details/`);
     };
     return (
-        <div style={{ height: 400, width: '80%', margin:50 }}>
+        <div>
             <DataGrid
                 rows={data}
                 columns={columns}
