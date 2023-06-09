@@ -38,11 +38,24 @@
   opacity: 0;
 }
 
+:root {
+  --body-color: #ccc;
+  --table-bg: #fff;
+  --color-row-odd: #b1d3fd;
+  --color-row-hover: #d5e499;
+}
+
 .body {
-  background-color: #a5a9b5;
+  background-color: var(--body-color);
+  /* background-color: #a5a9b5;
   color: #f3f0f0;
   font-family: Arial;
-  text-align: center;
+  text-align: center; */
+}
+
+.page {
+  margin: 0 auto;
+  max-width: 65rem;
 }
 
 @keyframes load8 {
