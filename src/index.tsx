@@ -30,9 +30,9 @@ const queryClient = new QueryClient({
 });*/
 
 root.render(
-    <BrowserRouter>
+    // <BrowserRouter>
       <QueryClientProvider client={queryClient}>
         <App />
       </QueryClientProvider>
-    </BrowserRouter>,
+    // </BrowserRouter>,
 );
